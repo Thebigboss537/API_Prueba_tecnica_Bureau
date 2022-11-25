@@ -13,7 +13,7 @@ using API_Prueba_tecnica_Bureau.Repositorios;
 
 namespace API_Prueba_tecnica_Bureau.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class UsuariosController : ControllerBase
     {
@@ -123,7 +123,7 @@ namespace API_Prueba_tecnica_Bureau.Controllers
             }
         }*/
 
-        [HttpPost]
+        [HttpPost("Registro/")]
         public async Task<ActionResult> Registro(Login_RegisterDto usuario)
         {
             
@@ -135,10 +135,57 @@ namespace API_Prueba_tecnica_Bureau.Controllers
                 _response.DisplayMessage = "Usuario ya registrado";
                 return BadRequest(_response);
             }
+            else if (respuesta == "error")
+            {
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "error en el registro de usuario";
+                return BadRequest(_response);
+            }
 
-            JwTPackage jpt = new JwTPackage();
-            jpt.UserName = usuario.Correo_electronico.ToString();
-            jpt.Token = respuesta;
+            _response.DisplayMessage = "Usuario registrado con exito";
+            return Ok(_response);
+
+
+            /*_response.Result = model;
+            return CreatedAtAction("GetAutor", new { id = model.Id_autor }, _response);*/
+
+            /*_response.IsSuccess = false;
+            _response.DisplayMessage = "Error al crear el autor";
+            _response.ErrorMessages = new List<string> { ex.ToString() };
+            return BadRequest(_response);*/
+
+        }
+
+        [HttpPost("Login/")]
+        public async Task<ActionResult> Login(Login_RegisterDto usuario)
+        {
+
+            var respuesta = await _usuarioRepositorio.Login(usuario);
+
+            if (respuesta == "usuario no registrado")
+            {
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "Usuario no registrado";
+                return BadRequest(_response);
+            }
+            else if (respuesta == "contraseña incorrecta")
+            {
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "Contraseña Incorrecta";
+                return BadRequest(_response);
+            }
+            else if (respuesta == "error")
+            {
+                _response.IsSuccess = false;
+                _response.DisplayMessage = "error al iniciar sesion";
+                return BadRequest(_response);
+            }
+
+            JwTPackage jpt = new()
+            {
+                UserName = usuario.Correo_electronico,
+                Token = respuesta
+            };
             _response.Result = jpt;
             _response.DisplayMessage = "Usuario conectado";
             return Ok(_response);

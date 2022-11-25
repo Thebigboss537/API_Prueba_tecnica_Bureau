@@ -26,23 +26,31 @@ namespace API_Prueba_tecnica_Bureau.Repositorios
 
         public async Task<string> Login(Login_RegisterDto Usuario)
         {
-            var user = await _db.Usuarios_autenticacion.FirstOrDefaultAsync(x => x.Username.ToString().ToLower().Equals(Usuario.Correo_electronico.ToString().ToLower()));
-
-            if (await IsRegister(Usuario.Correo_electronico))
+            try
             {
-                if (VerificarPasswordHash(Usuario.Contraseña, user.PasswordHash, user.PasswordSalt))
+                var user = await _db.Usuarios_autenticacion.FirstOrDefaultAsync(x => x.Username.ToLower().Equals(Usuario.Correo_electronico.ToLower()));
+
+                if (await IsRegister(Usuario.Correo_electronico))
                 {
-                    return CrearToken(user);
+                    if (VerificarPasswordHash(Usuario.Contraseña, user.PasswordHash, user.PasswordSalt))
+                    {
+                        return CrearToken(user);
+                    }
+                    else
+                    {
+                        return "contraseña incorrecta";
+                    }
                 }
                 else
                 {
-                    return "wrongpassword";
+                    return "usuario no registrado";
                 }
             }
-            else
+            catch (Exception e)
             {
-                return "usuario no registrado";
+                return "error";
             }
+            
 
 
             /*if (user == null)
@@ -92,8 +100,7 @@ namespace API_Prueba_tecnica_Bureau.Repositorios
                     await _db.Usuarios.AddAsync(usuario2);
                     //_db.Usuarios_autenticacion.Update(usuario_Autenticacion);
                     await _db.SaveChangesAsync();
-                    return CrearToken(usuario_Autenticacion);
-                        
+                    return "ok";
                 }
                 
             }
@@ -157,7 +164,7 @@ namespace API_Prueba_tecnica_Bureau.Repositorios
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = System.DateTime.Now.AddDays(1),
+                Expires = System.DateTime.UtcNow.AddMinutes(20),
                 SigningCredentials = creds
             };
 
