@@ -69,12 +69,15 @@ namespace API_Prueba_tecnica_Bureau.Repositorios
             try
             {
                 Usuario_autenticacion usuario_Autenticacion = new Usuario_autenticacion();
+                Usuario usuario2 = new Usuario();
                 if (await IsRegister(usuario.Correo_electronico.ToString()))
                 {
                     return "usuario registrado";
                 }
                 else
                 {
+                    usuario2.Correo_electronico = usuario.Correo_electronico;
+
                     CrearPasswordHash(usuario.Contraseña, out byte[] passwordHash, out byte[] passwordSalt);
 
                     usuario_Autenticacion.PasswordHash = passwordHash;
@@ -84,6 +87,9 @@ namespace API_Prueba_tecnica_Bureau.Repositorios
                         
                     //usuario_Autenticacion.Id_usuario_autenticacion = _db.Usuarios_autenticacion.AsNoTracking().Where(e => e.Username == usuario.Correo_electronico).FirstOrDefault().Id_usuario_autenticacion;
                     await _db.Usuarios_autenticacion.AddAsync(usuario_Autenticacion);
+                    await _db.SaveChangesAsync();
+                    usuario2.Id_usuario_autenticacion = usuario_Autenticacion.Id_usuario_autenticacion;
+                    await _db.Usuarios.AddAsync(usuario2);
                     //_db.Usuarios_autenticacion.Update(usuario_Autenticacion);
                     await _db.SaveChangesAsync();
                     return CrearToken(usuario_Autenticacion);
@@ -151,7 +157,7 @@ namespace API_Prueba_tecnica_Bureau.Repositorios
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = System.DateTime.Now.AddMinutes(20),
+                Expires = System.DateTime.Now.AddDays(1),
                 SigningCredentials = creds
             };
 
