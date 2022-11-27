@@ -12,15 +12,11 @@ namespace API_Prueba_tecnica_Bureau.Repositorios
     public class UsuarioRepositorio : IUsuarioRepositorio
     {
         private readonly DataContext _db;
-        private IMapper _mapper;
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration ;
 
-        
-
-        public UsuarioRepositorio(DataContext db, IMapper mapper, IConfiguration configuration)
+        public UsuarioRepositorio(DataContext db, IConfiguration configuration)
         {
             _db = db;
-            _mapper = mapper;
             _configuration = configuration;
         }
 

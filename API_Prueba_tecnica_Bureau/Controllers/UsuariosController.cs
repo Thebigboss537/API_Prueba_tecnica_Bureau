@@ -18,12 +18,10 @@ namespace API_Prueba_tecnica_Bureau.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly IUsuarioRepositorio _usuarioRepositorio;
-        private readonly DataContext _context;
         protected ResponseDto _response;
 
-        public UsuariosController(DataContext context, IUsuarioRepositorio usuarioRepositorio)
+        public UsuariosController(IUsuarioRepositorio usuarioRepositorio)
         {
-            _context = context;
             _usuarioRepositorio = usuarioRepositorio;
             _response = new ResponseDto();
         }
@@ -36,7 +34,7 @@ namespace API_Prueba_tecnica_Bureau.Controllers
             if (respuesta == "usuario registrado")
             {
                 _response.IsSuccess = false;
-                _response.DisplayMessage = "Usuario ya registrado";
+                _response.DisplayMessage = "Correo electronico ya registrado";
                 return BadRequest(_response);
             }
             else if (respuesta == "error")
