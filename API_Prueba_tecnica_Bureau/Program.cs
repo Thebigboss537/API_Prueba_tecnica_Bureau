@@ -38,7 +38,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             System.Text.Encoding.ASCII.GetBytes(
                 builder.Configuration.GetSection("AppSettings:Token").Value)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            RequireExpirationTime = true
         };
     });
 
