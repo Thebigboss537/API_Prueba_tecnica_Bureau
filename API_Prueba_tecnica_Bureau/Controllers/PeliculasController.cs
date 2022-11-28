@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API_Prueba_tecnica_Bureau.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/Pelicula")]
     [ApiController]
     public class PeliculasController : ControllerBase
@@ -39,7 +39,6 @@ namespace API_Prueba_tecnica_Bureau.Controllers
             }
             catch (Exception ex)
             {
-
                 _response.IsSuccess = false;
                 _response.ErrorMessages = new List<string> { ex.ToString() };
             }
@@ -70,6 +69,7 @@ namespace API_Prueba_tecnica_Bureau.Controllers
             try
             {
                 PeliculaDto model = await _peliculaRepositorio.CreateUpdate(peliculaDto);
+                _response.DisplayMessage = "Pelicula editada con exito";
                 _response.Result = model;
                 return Ok(_response);
             }
@@ -91,6 +91,7 @@ namespace API_Prueba_tecnica_Bureau.Controllers
             {
                 PeliculaDto model = await _peliculaRepositorio.CreateUpdate(peliculaDto);
                 _response.Result = model;
+                _response.DisplayMessage = "Pelicula creada con exito";
                 return CreatedAtAction("GetPelicula", new { id = model.Id_pelicula }, _response);
             }
             catch (Exception ex)
@@ -103,7 +104,7 @@ namespace API_Prueba_tecnica_Bureau.Controllers
         }
 
         // DELETE: api/Peliculas/5
-        [HttpDelete("editarpelicula/{id}")]
+        [HttpDelete("eliminarpelicula/{id}")]
         public async Task<IActionResult> DeletePelicula(int id)
         {
             try

@@ -56,7 +56,7 @@ namespace API_Prueba_tecnica_Bureau.Controllers
             if (respuesta == "usuario no registrado")
             {
                 _response.IsSuccess = false;
-                _response.DisplayMessage = "Usuario no registrado";
+                _response.DisplayMessage = "Correo electronico no registrado";
                 return BadRequest(_response);
             }
             else if (respuesta == "contraseña incorrecta")

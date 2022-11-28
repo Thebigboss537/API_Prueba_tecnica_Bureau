@@ -17,11 +17,11 @@ namespace API_Prueba_tecnica_Bureau.Models.Dto
 
         [Required]
         public int Id_director { get; set; }
-        public Categoria? Director { get; set; }
+        public Director? Director { get; set; }
 
         [Required]
         public int Id_idioma { get; set; }
-        public Categoria? Idioma { get; set; }
+        public Idioma? Idioma { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

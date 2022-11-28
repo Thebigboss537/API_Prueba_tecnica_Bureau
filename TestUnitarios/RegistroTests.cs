@@ -15,7 +15,7 @@ using System.Configuration;
 using System.Net.Http.Json;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
-namespace APITests
+namespace API.tests
 {
     public class RegistroTests
     {
