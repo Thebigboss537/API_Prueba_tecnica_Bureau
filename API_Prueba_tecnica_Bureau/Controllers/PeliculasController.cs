@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API_Prueba_tecnica_Bureau.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/Pelicula")]
     [ApiController]
     public class PeliculasController : ControllerBase
